@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Alamofire
 
 class ViewController: UIViewController {
 
@@ -135,7 +136,7 @@ class ViewController: UIViewController {
             }
         }
     }
-
+    
     // 서버에서 5일 간 날씨 예보 데이터를 불러오는 메서드
     private func fetchForecastData() {
         var urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/forecast")
@@ -158,6 +159,76 @@ class ViewController: UIViewController {
             DispatchQueue.main.async {
                 self.dataSource = result.list
                 self.tableView.reloadData()
+            }
+        }
+    }
+    
+    
+    // 서버 데이터를 Alamofire로 불러오는 메서드
+    private func fetchDataByAlamofire<T: Decodable>(url: URL, completion: @escaping (Result<T, AFError>) -> Void) {
+        AF.request(url).responseDecodable(of: T.self) { response in
+            completion(response.result)
+        }
+    }
+    
+    
+    // 서버에서 현재 날씨 데이터를 Alamofire로 불러오는 메서드
+    private func fetchCurrentByAlamofireWeatherData() {
+        var urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/weather")
+        urlComponents?.queryItems = self.urlQueryItems
+        
+        guard let url = urlComponents?.url else {
+            print("잘못된 URL")
+            return
+        }
+        
+        fetchDataByAlamofire(url: url) { [weak self] (result: Result<CurrentWeatherResult, AFError>) in
+            switch result {
+            case .success(let result):
+                DispatchQueue.main.async {
+                    self?.tempLabel.text = "\(Int(result.main.temp))°C"
+                    self?.tempMinLabel.text = "최소: \(Int(result.main.temp_min))°C"
+                    self?.tempMaxLabel.text = "최고: \(Int(result.main.temp_max))°C"
+                }
+                
+                guard let imageUrl = URL(string: "https://openweathermap.org/img/wn/\(result.weather[0].icon)@2x.png") else {
+                    return
+                }
+                
+                // Alamofire 를 사용한 이미지 로드
+                AF.request(imageUrl).responseData { response in
+                    if let data = response.data, let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            self?.imageView.image = image
+                        }
+                    }
+                }
+            case .failure(let error):
+                print("데이터 로드 실패: \(error)")
+            }
+        }
+    }
+
+    // 서버에서 5일 간 날씨 예보 데이터를 Alamofire로 불러오는 메서드
+    private func fetchForecastDataByAlamofire() {
+        var urlComponents = URLComponents(string: "https://api.openweathermap.org/data/2.5/forecast")
+        urlComponents?.queryItems = self.urlQueryItems
+        
+        guard let url = urlComponents?.url else {
+            print("잘못된 URL")
+            return
+        }
+        
+        fetchDataByAlamofire(url: url) { [weak self] (result: Result<ForecastWeatherResult, AFError>) in
+            guard let self else { return }
+            switch result {
+            case .success(let result):
+                DispatchQueue.main.async {
+                    self.dataSource = result.list
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("데이터 로드 실패: \(error)")
             }
         }
     }

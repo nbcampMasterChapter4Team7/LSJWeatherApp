@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		866A7D672DACE68400FD7E41 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 866A7D662DACE68400FD7E41 /* SnapKit */; };
 		866A7D6A2DACE6AF00FD7E41 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 866A7D692DACE6AF00FD7E41 /* Then */; };
+		866A7D772DACF32200FD7E41 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 866A7D762DACF32200FD7E41 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				866A7D772DACF32200FD7E41 /* Alamofire in Frameworks */,
 				866A7D672DACE68400FD7E41 /* SnapKit in Frameworks */,
 				866A7D6A2DACE6AF00FD7E41 /* Then in Frameworks */,
 			);
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				866A7D662DACE68400FD7E41 /* SnapKit */,
 				866A7D692DACE6AF00FD7E41 /* Then */,
+				866A7D762DACF32200FD7E41 /* Alamofire */,
 			);
 			productName = LSJWeather;
 			productReference = 866A7D4D2DACE3C700FD7E41 /* LSJWeather.app */;
@@ -119,6 +122,7 @@
 			packageReferences = (
 				866A7D652DACE68400FD7E41 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				866A7D682DACE6AF00FD7E41 /* XCRemoteSwiftPackageReference "Then" */,
+				866A7D752DACF32200FD7E41 /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 866A7D4E2DACE3C700FD7E41 /* Products */;
@@ -366,6 +370,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		866A7D752DACF32200FD7E41 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -378,6 +390,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 866A7D682DACE6AF00FD7E41 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		866A7D762DACF32200FD7E41 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 866A7D752DACF32200FD7E41 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
